@@ -8,7 +8,7 @@ A simple e-Commerce website where sellers can post ads of their products and buy
 
 #### Simple Class Diagram for the project
 
-![Class Diagram](ShipShop Diagram.png "Class Diagram")
+![Class Diagram](https://github.com/MuizZer07/ship-shop/ShipShop Diagram.png "Class Diagram")
 
 #### install modules
 - ##### With Pipenv (it will install modules automatically)

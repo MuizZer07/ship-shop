@@ -1,0 +1,28 @@
+.body{
+    background-color: rgba(168, 193, 218, 0.41)
+}
+
+.wrapper{
+    margin-top: 70px;
+}
+
+.new_footer{
+    background-color: #377984;
+    color: white;
+    text-align: right;
+    padding: 10px;
+}
+
+.new_footer a{
+   color: rgb(185, 206, 255);
+   text-decoration: none;
+}
+
+.navbar{
+    background-color: #377984;
+    color: white;
+}
+
+.navbar a{
+    color: white;
+}

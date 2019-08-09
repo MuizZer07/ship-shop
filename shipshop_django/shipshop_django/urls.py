@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('webapp.urls')),
     path('product/', include('product.urls')),
     path('api/', include(router.urls)),
+    path('', include('authn.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

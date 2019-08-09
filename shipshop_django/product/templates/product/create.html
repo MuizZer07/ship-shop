@@ -4,8 +4,7 @@
 
 <form action="{% url 'add_product_request' %}" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">
     <fieldset>
-    <input type="hidden" name="csrfmiddlewaretoken" value="cM50dF1WeOpYZgsPLTc8soxUeDUHAmTQSyenM6i6LCqzV7bpbZzsCIooEEYhBBpe">
-
+    {% csrf_token %}
     <div class="form-group ">
       <label class="col-sm-2 control-label ">
         Name

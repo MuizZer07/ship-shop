@@ -1,7 +1,15 @@
 from django.db import models
 
+'''
+    model classes
+'''
 
 class Category(models.Model):
+    '''
+        category for each products
+    '''
+
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, blank=True)
 
@@ -9,6 +17,11 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+    '''
+        product model to store product information
+    '''
+
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)

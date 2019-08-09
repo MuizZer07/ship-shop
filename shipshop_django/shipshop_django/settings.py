@@ -132,3 +132,5 @@ MEDIA_URL = '/media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_NAME = 'Ship Shop'
+
+API_ENDPOINT = 'http://127.0.0.1:8000/api'

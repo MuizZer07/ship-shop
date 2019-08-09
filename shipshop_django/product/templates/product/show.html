@@ -1,0 +1,55 @@
+{% extends "base_web.html" %}
+
+{% block title %}
+    Ship Shop | You are just one click away!..
+{% endblock %}
+
+{% block customcss %}
+{% load staticfiles %}
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+    <section class="py-5">
+        <div class="container">
+
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+
+            <h2 class="font-weight-light">Recent Products</h2>
+            <div class="row">
+                  <div class="card" style="width: 25rem;">
+                      <img class="card-img-top" src="{{ product.image }}" alt="Product Image">
+                      <div class="card-body">
+                          <h5 class="card-title">Name: {{ product.name }} </h5> <br>
+                          Price: {{ product.price }}<br>
+                          Available: {{ product.available_quantity }}<br>
+                          Description: {{ product.description }}<br>
+                          <hr>
+                          <a href="#" class="btn btn-secondary">Add to Cart</a>
+                      </div>
+                    </div>
+             </div>
+
+
+
+
+
+            {% for product in products %}
+              <img href=""
+              {{ product.name }}
+              {{ product.price }}
+              {{ product.available_quantity }}
+              <br>
+            {% endfor %}
+            </div>
+    </section>
+{% endblock %}

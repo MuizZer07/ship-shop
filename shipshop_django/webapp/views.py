@@ -1,7 +1,19 @@
 from django.shortcuts import render
+import requests
+from shipshop_django.settings import API_ENDPOINT
+
+'''
+    Frontend,
+    view class for all web pages,
+    all requests and responses from REST API endpoint,
+    no direct database manipulation
+'''
 
 def index(request):
-    return render(request, 'webs/index.html')
+    products = requests.get(API_ENDPOINT + '/products')
+    products = products.json()
+
+    return render(request, 'webs/index.html', {'products': products})
 
 def about(request):
     return render(request, 'webs/about.html')

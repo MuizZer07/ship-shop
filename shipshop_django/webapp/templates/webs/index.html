@@ -6,27 +6,65 @@
 
 {% block customcss %}
 {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom/index.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/custom/index.css' %}"> -->
 {% endblock %}
 
 {% block header %}
 <header class="masthead">
-        <div class="container h-100">
+        <!-- <div class="container h-100">
         <div class="row h-100 align-items-center">
             <div class="col-12 text-center">
                     <h1 class="font-weight-normal">Buy and sell online</h1>
                     <p class="lead font-weight-normal">You are just one click away! </p>
                  </div>
             </div>
-        </div>
+        </div> -->
     </header>
 {% endblock %}
 
 {% block content %}
     <section class="py-5">
         <div class="container">
-            <h2 class="font-weight-light">Page Content</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus ab nulla dolorum autem nisi officiis blanditiis voluptatem hic, assumenda aspernatur facere ipsam nemo ratione cumque magnam enim fugiat reprehenderit expedita.</p>
-        </div>
+
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+
+            <h2 class="font-weight-light">Recent Products</h2>
+            <div class="row">
+                {% for product in products %}
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ product.image }}" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Name: {{ product.name }} |
+                            <span class="badge badge-pill badge-success"> {{ product.price }} </span>
+                            <span class="badge badge-pill badge-success"> {{ product.available_quantity }} </span>
+                            <hr>
+                            <a href="product/show/{{product.id}}" class="btn btn-primary">Details</a>
+                            <a href="#" class="btn btn-secondary">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+             </div>
+
+
+
+
+
+            {% for product in products %}
+              <img href=""
+              {{ product.name }}
+              {{ product.price }}
+              {{ product.available_quantity }}
+              <br>
+            {% endfor %}
+            </div>
     </section>
 {% endblock %}

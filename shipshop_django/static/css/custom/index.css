@@ -1,0 +1,9 @@
+.masthead {
+    height: 15vh;
+    min-height: 300px;
+    color: white;
+    background-image: url('/static/images/blue-qr-code-scanning-icon-or-design-logo-vector-18861869.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }

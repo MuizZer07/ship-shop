@@ -11,6 +11,8 @@ djangorestframework = "*"
 requests = "*"
 psycopg2 = "~=2.7.1"
 pillow = "*"
+django-rest-auth = "*"
+django-allauth = "*"
 
 [requires]
 python_version = "3.7"

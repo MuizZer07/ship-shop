@@ -1,0 +1,89 @@
+{% extends "base_web.html" %}
+
+{% block title %}
+    ShipShop | Registration as Buyer
+{% endblock %}
+
+{% block customcss %}
+{% load staticfiles %}
+<style>
+        .body {
+        padding-top: 0px;
+        }
+
+        content-main {
+            max-width: 400px;
+            padding: 19px 29px 29px;
+            margin: 0 auto 20px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            margin-bottom: 200px;
+        }
+
+        login-form input[type="text"],
+        login-form input[type="password"]{
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            margin-left: 10px;
+        }
+
+        login-form input[type="confirm_password"] {
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            margin-left: 450px;
+        }
+
+        login-form input[type="email"] {
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            margin-left: 45px;
+        }
+        login-form input[type="submit"] {
+            color: white;
+        }
+
+    </style>
+{% endblock %}
+
+{% load i18n static %}
+
+{% block content %}
+<div id="content-main">
+    {% if form.errors and not form.non_field_errors %}
+    <p class="errornote">
+        {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}
+            {% trans "Please correct the errors below." %}
+        {% endif %}
+    </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="errornote">
+                {{ error }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Register</h2>
+    <hr>
+
+    <form method="post" id="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <div class="submit-row">
+        <input class="btn btn-secondary"  type="submit" value="Register">
+    </div>
+    </form>
+</div>
+
+{%  endblock %}

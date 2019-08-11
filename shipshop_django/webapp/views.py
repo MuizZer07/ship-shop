@@ -13,6 +13,7 @@ def index(request):
     products = requests.get(API_ENDPOINT + '/products')
     products = products.json()
 
+    print(request.user)
     return render(request, 'webs/index.html', {'products': products})
 
 def about(request):

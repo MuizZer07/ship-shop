@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'webapp',
     'product',
     'users',
+    'authn'
 ]
 
 MIDDLEWARE = [
@@ -98,9 +99,9 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
-REST_FRAMEWORK = {
-   'DEFAULT_PERMISSION_CLASSES': ( 'rest_framework.permissions.IsAuthenticated', ),
-}
+# REST_FRAMEWORK = {
+#    'DEFAULT_PERMISSION_CLASSES': ( 'rest_framework.permissions.IsAuthenticated', ),
+# }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
         'REGISTER_SERIALIZER': 'users.api.serializers.RegisterSerializer',

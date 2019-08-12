@@ -1,7 +1,7 @@
 {% extends "base_web.html" %}
 
 {% block title %}
-    Contact
+  ShipShop | Contact
 {% endblock %}
 
 {% block customcss %}
@@ -9,11 +9,22 @@
 
 {% endblock %}
 
-{% block content %}   
+{% block content %}
     <section class="py-5">
         <div class="container">
             <h2 class="font-weight-light">Contact</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus ab nulla dolorum autem nisi officiis blanditiis voluptatem hic, assumenda aspernatur facere ipsam nemo ratione cumque magnam enim fugiat reprehenderit expedita.</p>
-        </div>
+            <p><small>This Website is managed and developed by <a href="http://muizzer07.pythonanywhere.com" target=”_blank”>Muiz Ahmed Khan</a>. Source code is available on
+                <a class="githublink" target=”_blank” href="https://github.com/MuizZer07/ship-shop"> GitHub.</a>
+                Feel free to give any feedback via email [<a href="mailto:muizxzer07@gmail.com" target="_top">muizxzer07@gmail.com</a>] or contact on social media.</small>
+            <hr>
+
+            <a data-toggle="tooltip" title="Facebook" target=”_blank” href="https://www.facebook.com/muiz07"><i class="fab fa-facebook-square"></i></a>
+            <a data-toggle="tooltip" title="Twitter" target=”_blank” href="https://twitter.com/MuizZer07"><i class="fab fa-twitter"></i></a>
+            <a data-toggle="tooltip" title="linkedin" target=”_blank” href="https://www.linkedin.com/in/muiz-ahmed-khan/"><i
+                    class="fab fa-linkedin"></i></a>
+            <a data-toggle="tooltip" title="github" target=”_blank” href="https://github.com/MuizZer07"><i class="fab fa-github-square"></i></a>
+            <a data-toggle="tooltip" title="instagram" target=”_blank” href="https://www.instagram.com/muizzer07/"><i class="fab fa-instagram"></i></a>
+            <br>
+            <small>Muiz Ahmed Khan &copy; {%now "Y"%}</small>  </div>
     </section>
 {% endblock %}

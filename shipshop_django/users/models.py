@@ -12,7 +12,7 @@ class Buyer(models.Model):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user']
     is_anonymous = False
-    is_authenticated = False
+    is_authenticated = True
 
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -21,4 +21,4 @@ class Seller(models.Model):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user']
     is_anonymous = False
-    is_authenticated = False
+    is_authenticated = True

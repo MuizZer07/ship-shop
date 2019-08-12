@@ -6,7 +6,7 @@ from django.views.generic import CreateView
 from .models import User
 
 def seller_profile(request):
-    return render(request, 'authn/pages/seller_profile.html')
+    return render(request, 'pages/seller_profile.html')
 
 def buyer_profile(request):
-    return render(request, 'authn/pages/buyer_profile.html')
+    return render(request, 'pages/buyer_profile.html')

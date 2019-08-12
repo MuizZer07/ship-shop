@@ -12,7 +12,7 @@ def show_product(request, product_id):
     '''
         shows a single product to template
         input: product_id
-        
+
         return: product details page
     '''
 

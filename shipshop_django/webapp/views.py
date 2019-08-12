@@ -14,6 +14,9 @@ def index(request):
     products = products.json()
 
     print(request.user)
+    if 'key'in request.session:
+        print(request.session['key'])
+
     return render(request, 'webs/index.html', {'products': products})
 
 def about(request):

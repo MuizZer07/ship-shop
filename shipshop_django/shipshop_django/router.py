@@ -7,7 +7,6 @@ router.register('products', ProductViewSet, base_name='product')
 router.register('categories', CategoryViewSet)
 router.register('users', UserListView)
 
-
 # import requests
 #
 # url = 'http://127.0.0.1:8000/hello/'

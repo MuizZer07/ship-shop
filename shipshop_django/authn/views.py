@@ -9,11 +9,16 @@ from django.template.loader import get_template
 from django.contrib import messages
 from django.urls import reverse
 import requests
+from django.contrib.auth import authenticate, login, logout
 
-def register_buyer(request):
-    return render(request, 'registration/register_buyer.html')
+'''
+    - user registration
+    - classes and helper functions
+'''
+def register(request):
+    return render(request, 'registration/register_user.html')
 
-def register_new_buyer(form, request):
+def register_new_user(form, request):
     payload = {
         'email': form.cleaned_data.get('email'),
         'username': form.cleaned_data.get('username'),
@@ -21,19 +26,26 @@ def register_new_buyer(form, request):
         'last_name': form.cleaned_data.get('last_name'),
         'password1': form.cleaned_data.get('password'),
         'password2': form.cleaned_data.get('confirm_password'),
+        form.cleaned_data.get('register_as'): True
     }
-    response = requests.post(settings.API_ENDPOINT + '/buyers/rest_auth/registration/', data=payload)
+    response = requests.post(settings.API_ENDPOINT + '/rest_auth/registration', data=payload)
 
     if response.status_code >= 300:
         messages.add_message(request, messages.ERROR, 'Registration Error!')
         response = response.json()
+
+        for resp in response:
+            for res in response[resp]:
+                messages.add_message(request, messages.ERROR, res)
+        response['data'] = 'error'
     else:
         messages.add_message(request, messages.INFO, 'Successfully Registered!')
         response = response.json()
         request.session['key'] = response['key']
+        response['data'] = 'success'
     return response
 
-class BuyerRegisterForm(forms.Form):
+class RegisterForm(forms.Form):
     username = forms.CharField()
     first_name = forms.CharField()
     last_name = forms.CharField()
@@ -41,108 +53,8 @@ class BuyerRegisterForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean_password_confirm(self):
-        cleaned_data = super().clean()
-
-        if form.cleaned_data.get('password') != form.cleaned_data.get('confirm_password'):
-            raise ValidationError('Password fields do not match')
-
-class BuyerRegisterView(FormView):
-    template_name = "registration/register_buyer.html"
-    form_class = BuyerRegisterForm
-    success_url = '/'
-
-    def form_valid(self, form):
-        try:
-            response = register_new_buyer(form, self.request)
-            messages.add_message(self.request, messages.INFO, response)
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-        except IntegrityError as e:
-            return redirect('/buyer_register')
-
-def login_buyer(request):
-    return render(request, 'authn/buyer_login.html')
-
-def login_a_buyer(request, username, password):
-    payload = {
-        'username': username,
-        'password': password
-    }
-
-    response = requests.post(settings.API_ENDPOINT + '/buyers/rest_auth/login/', data=payload)
-
-    if response.status_code >= 300:
-        messages.add_message(request, messages.ERROR, 'Sign in Error!')
-    else:
-        messages.add_message(request, messages.INFO, 'Successfully Signed In!')
-        response = response.json()
-        request.session['key'] = response['key']
-    return response
-
-def logout_buyer(request):
-    if 'key' in request.session['key']:
-        payload = {
-            'key': request.session['key'],
-        }
-        response = requests.post(settings.API_ENDPOINT + '/buyers/rest_auth/logout/', data=payload)
-        print(response.status_code)
-        if response.status_code >= 300:
-            messages.add_message(request, messages.ERROR, 'Sign out Error!')
-        else:
-            messages.add_message(request, messages.INFO, 'Successfully Signed Out!')
-            request.session.pop('key', request.session['key'])
-        return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-    else:
-        messages.add_message(request, messages.INFO, 'You are not Signed In!')
-        return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-
-class BuyerLoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-class BuyerLoginView(FormView):
-    template_name = "authn/login_buyer.html"
-    form_class = BuyerLoginForm
-    success_url = '/'
-
-    def form_valid(self, form):
-        try:
-            response = login_a_buyer(self.request, form.cleaned_data['username'], form.cleaned_data['password'])
-            print(response)
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-        except IntegrityError as e:
-            return redirect('/')
-
-def register_seller(request):
-    return render(request, 'registration/register_seller.html')
-
-def register_new_seller(form, request):
-    payload = {
-        'email': form.cleaned_data.get('email'),
-        'username': form.cleaned_data.get('username'),
-        'first_name': form.cleaned_data.get('first_name'),
-        'last_name': form.cleaned_data.get('last_name'),
-        'password1': form.cleaned_data.get('password'),
-        'password2': form.cleaned_data.get('confirm_password'),
-    }
-    response = requests.post(settings.API_ENDPOINT + '/sellers/rest_auth/registration/', data=payload)
-
-    if response.status_code >= 300:
-        messages.add_message(request, messages.ERROR, 'Registration Error!')
-        response = response.json()
-    else:
-        messages.add_message(request, messages.INFO, 'Successfully Registered!')
-        response = response.json()
-        request.session['key'] = response['key']
-    return response
-
-class SellerRegisterForm(forms.Form):
-    username = forms.CharField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    options =[("buyer", "Buyer"), ("seller", "Seller")]
+    register_as = forms.ChoiceField(choices=options, label="Register As")
 
     def clean_password_confirm(self):
         cleaned_data = super().clean()
@@ -150,67 +62,97 @@ class SellerRegisterForm(forms.Form):
         if form.cleaned_data.get('password') != form.cleaned_data.get('confirm_password'):
             raise ValidationError('Password fields do not match')
 
-class SellerRegisterView(FormView):
-    template_name = "registration/register_seller.html"
-    form_class = SellerRegisterForm
+class RegisterView(FormView):
+    template_name = "registration/register_user.html"
+    form_class = RegisterForm
     success_url = '/'
 
     def form_valid(self, form):
         try:
-            response = register_new_seller(form, self.request)
-            messages.add_message(self.request, messages.INFO, response)
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+            response = register_new_user(form, self.request)
+
+            if response['data'] != 'error':
+                return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+            else:
+                return  redirect('/register')
         except IntegrityError as e:
-            return redirect('/seller_register')
+            return redirect('/register')
 
-def login_seller(request):
-    return render(request, 'authn/seller_login.html')
 
-def login_a_seller(request, username, password):
+'''
+    - user login
+    - classes and helper functions
+'''
+def login_user(request):
+    return render(request, 'authn/login_user.html')
+
+def login_a_user(request, username, password):
     payload = {
         'username': username,
         'password': password
     }
 
-    response = requests.post(settings.API_ENDPOINT + '/sellers/rest_auth/login/', data=payload)
+    response = requests.post(settings.API_ENDPOINT + '/rest_auth/login/', data=payload)
 
-    if response.status_code >= 300:
+    if response.status_code >= 300 and response.status_code < 400:
         messages.add_message(request, messages.ERROR, 'Sign in Error!')
+        response = response.json()
+
+        for res in  response['non_field_errors']:
+            messages.add_message(request, messages.ERROR, res)
+
+        response['data'] = 'error'
+    elif response.status_code >= 400:
+        messages.add_message(request, messages.ERROR, 'Sign in Error!')
+        response = {}
+        response['data'] = 'error'
     else:
         messages.add_message(request, messages.INFO, 'Successfully Signed In!')
         response = response.json()
-        request.session['key'] = response['key']
+        if 'key' in response:
+            request.session['key'] = response['key']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+        response['data'] = 'success'
     return response
 
-def logout_seller(request):
-    if 'key' in request.session['key']:
-        payload = {
-            'key': request.session['key'],
-        }
-        response = requests.post(settings.API_ENDPOINT + '/sellers/rest_auth/logout/', data=payload)
-
-        if response.status_code >= 300:
-            messages.add_message(request, messages.ERROR, 'Sign out Error!')
-        else:
-            messages.add_message(request, messages.INFO, 'Successfully Signed Out!')
-
-        return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-    else:
-        messages.add_message(request, messages.INFO, 'You are not Signed In!')
-        return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-
-class SellerLoginForm(forms.Form):
+class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-class SellerLoginView(FormView):
-    template_name = "authn/login_seller.html"
-    form_class = SellerLoginForm
+class LoginView(FormView):
+    template_name = "authn/login_user.html"
+    form_class = LoginForm
     success_url = '/'
 
     def form_valid(self, form):
         try:
-            response = login_a_seller(self.request, form.cleaned_data['username'], form.cleaned_data['password'])
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+            response = login_a_user(self.request, form.cleaned_data['username'], form.cleaned_data['password'])
+
+            if response['data'] != 'error':
+                return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+            else:
+                return redirect('/user_login')
+
         except IntegrityError as e:
-            return redirect('/')
+            return redirect('/user_login')
+
+'''
+    user logout function
+'''
+def logout_user(request):
+    print('ASAS', request.session['key'])
+    payload = {
+        'key': request.session['key'],
+    }
+    response = requests.post(settings.API_ENDPOINT + '/rest_auth/logout/', data=payload)
+
+    if response.status_code >= 300:
+        messages.add_message(request, messages.ERROR, 'Sign out Error!')
+    else:
+        messages.add_message(request, messages.INFO, 'Successfully Signed Out!')
+        request.session.pop('key', request.session['key'])
+        logout(request)
+        return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
+    return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)

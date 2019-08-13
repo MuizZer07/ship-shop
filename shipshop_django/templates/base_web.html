@@ -54,34 +54,18 @@
                           My Account
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a style="color:black" class="dropdown-item" href="#">Dashboard</a>
+                          <a style="color:black" class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
                           <!-- <a style="color:black" class="dropdown-item" href="#">Settings</a> -->
-                          <a style="color: black" class="dropdown-item" href="{% url 'logout_buyer' %}">Logout</a>
+                          <a style="color: black" class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </div>
                       </div>
                 </li>
                 {% else %}
-                <li class="nav-item" >
-                  <div class="dropdown">
-                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sign In
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a style="color:black" class="dropdown-item" href="{% url 'buyer_login' %}">As Buyer</a>
-                        <a style="color:black" class="dropdown-item" href="{% url 'seller_login' %}">As Seller</a>
-                      </div>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Sign In</a>
                 </li>
-                <li class="nav-item" >
-                  <div class="dropdown">
-                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sign Up
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a style="color:black" class="dropdown-item" href="{% url 'buyer_register' %}">As Buyer</a>
-                        <a style="color:black" class="dropdown-item" href="{% url 'seller_register' %}">As Seller</a>
-                      </div>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
                 </li>
                 {% endif %}
                 </ul>

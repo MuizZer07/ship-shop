@@ -13,10 +13,6 @@ def index(request):
     products = requests.get(API_ENDPOINT + '/products')
     products = products.json()
 
-    print(request.user)
-    if 'key'in request.session:
-        print(request.session['key'])
-
     return render(request, 'webs/index.html', {'products': products})
 
 def about(request):

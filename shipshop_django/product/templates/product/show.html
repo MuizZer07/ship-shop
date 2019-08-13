@@ -34,22 +34,14 @@
                           Available: {{ product.available_quantity }}<br>
                           Description: {{ product.description }}<br>
                           <hr>
-                          <a href="#" class="btn btn-secondary">Add to Cart</a>
+                          {% if product.id not in cart %}
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-secondary">Add to Cart</a>
+                          {% else %}
+                            <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger">Remove from Cart</a>
+                          {% endif %}
                       </div>
                     </div>
              </div>
-
-
-
-
-
-            {% for product in products %}
-              <img href=""
-              {{ product.name }}
-              {{ product.price }}
-              {{ product.available_quantity }}
-              <br>
-            {% endfor %}
             </div>
     </section>
 {% endblock %}

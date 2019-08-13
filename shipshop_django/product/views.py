@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 import requests
 from shipshop_django.settings import API_ENDPOINT
 from django.contrib import messages
+from webapp import global_variables
 
 '''
     view class to perform CRUD operations
@@ -19,7 +20,7 @@ def show_product(request, product_id):
     product = requests.get(API_ENDPOINT + '/products/' + str(product_id))
     product = product.json()
 
-    return render(request, 'product/show.html', {'product': product})
+    return render(request, 'product/show.html', {'product': product, 'cart': global_variables.cart})
 
 '''
     show list of products for a seller
@@ -44,21 +45,8 @@ def add_product(request):
 
         return: form to add product
     '''
-    categories = [
-        'Entertainment',
-        'Computer & Accessories',
-        'Mobile & Accessories',
-        'Clothings',
-        'Electronics',
-        'Health & Beauty',
-        'Home & Lifestyle',
-        'Sport',
-        'Men\'s Fashion',
-        'Women\'s Fashion',
-        'Others',
-    ]
 
-    return render(request, 'product/create.html', {'categories': categories})
+    return render(request, 'product/create.html', {'categories': global_variables.categories})
 
 def add_product_request(request):
     '''
@@ -107,24 +95,11 @@ def edit_product(request, product_id):
         input: product_id
         return: form with previous value
     '''
-    categories = [
-        'Entertainment',
-        'Computer & Accessories',
-        'Mobile & Accessories',
-        'Clothings',
-        'Electronics',
-        'Health & Beauty',
-        'Home & Lifestyle',
-        'Sport',
-        'Men\'s Fashion',
-        'Women\'s Fashion',
-        'Others',
-    ]
 
     product = requests.get(API_ENDPOINT + '/products/' + str(product_id))
     product = product.json()
 
-    return render(request, 'product/edit.html', {'product': product, 'categories': categories})
+    return render(request, 'product/edit.html', {'product': product, 'categories': global_variables.categories})
 
 def edit_product_request(request, product_id):
     '''

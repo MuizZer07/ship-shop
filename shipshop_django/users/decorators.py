@@ -1,6 +1,7 @@
 from functools import wraps
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import AnonymousUser
+from django.contrib import messages
 
 def buyers_only(function):
   @wraps(function)
@@ -10,9 +11,11 @@ def buyers_only(function):
         if request.user.is_buyer:
              return function(request, *args, **kwargs)
         else:
+            messages.add_message(request, messages.INFO, 'You should be logged in as a Buyer!')
             return HttpResponseRedirect('/')
     else:
-        return HttpResponseRedirect('/')
+        messages.add_message(request, messages.INFO, 'You should be logged in as a Buyer!')
+        return HttpResponseRedirect('/user_login/?next=checkout')
 
   return wrap
 

@@ -21,14 +21,44 @@ def show_product(request, product_id):
 
     return render(request, 'product/show.html', {'product': product})
 
+'''
+    show list of products for a seller
+    input: user id (owner)
+
+    return: list of products
+'''
+def show_list(request):
+    products = requests.get(API_ENDPOINT + '/products')
+    products = products.json()
+
+    my_products = []
+    for product in products:
+        if product['owner'].split("/")[-2] == str(request.user.id):
+            my_products.append(product)
+
+    return render(request, 'product/show_list.html', {'products': my_products})
+
 def add_product(request):
     '''
         add new product form
 
         return: form to add product
     '''
+    categories = [
+        'Entertainment',
+        'Computer & Accessories',
+        'Mobile & Accessories',
+        'Clothings',
+        'Electronics',
+        'Health & Beauty',
+        'Home & Lifestyle',
+        'Sport',
+        'Men\'s Fashion',
+        'Women\'s Fashion',
+        'Others',
+    ]
 
-    return render(request, 'product/create.html')
+    return render(request, 'product/create.html', {'categories': categories})
 
 def add_product_request(request):
     '''
@@ -66,7 +96,7 @@ def delete_product(request, product_id):
         messages.add_message(request, messages.ERROR, 'Error deleting new product!')
     else:
         messages.add_message(request, messages.INFO, 'Successfully deleted!')
-    return redirect('index')
+    return redirect('dashboard')
 
 def edit_product(request, product_id):
     '''
@@ -77,11 +107,24 @@ def edit_product(request, product_id):
         input: product_id
         return: form with previous value
     '''
+    categories = [
+        'Entertainment',
+        'Computer & Accessories',
+        'Mobile & Accessories',
+        'Clothings',
+        'Electronics',
+        'Health & Beauty',
+        'Home & Lifestyle',
+        'Sport',
+        'Men\'s Fashion',
+        'Women\'s Fashion',
+        'Others',
+    ]
 
     product = requests.get(API_ENDPOINT + '/products/' + str(product_id))
     product = product.json()
 
-    return render(request, 'product/edit.html', {'product': product})
+    return render(request, 'product/edit.html', {'product': product, 'categories': categories})
 
 def edit_product_request(request, product_id):
     '''
@@ -96,7 +139,7 @@ def edit_product_request(request, product_id):
         if request.POST[info] != '':
             payload[info] = request.POST[info]
 
-    if len(request.FILES):
+    if len(request.FILES) > 0:
         images = {'image': request.FILES['image']}
         response = requests.put(API_ENDPOINT + '/products/' + product_id + '/', data=payload, files=images)
     else:
@@ -107,4 +150,4 @@ def edit_product_request(request, product_id):
     else:
         messages.add_message(request, messages.INFO, 'Successfully added new product!')
 
-    return redirect('index')
+    return redirect('dashboard')

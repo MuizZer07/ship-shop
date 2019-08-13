@@ -1,72 +1,145 @@
-<form action="{% url 'edit_product_request' product.id %}" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">
-    <fieldset>
-    {% csrf_token %}
-    <div class="form-group ">
-      <label class="col-sm-2 control-label ">
-        Name
-      </label>
-      <div class="col-sm-10">
-        <input name="name" class="form-control" type="text" value="{{ product.name }}">
+{% extends "base_web.html" %}
+
+{% block title %}
+    ShipShop | Add A Product
+{% endblock %}
+
+{% block customcss %}
+{% load staticfiles %}
+<style>
+        .body {
+        padding-top: 0px;
+        }
+
+        #content-main {
+            max-width: 550px;
+            padding: 19px 29px 29px;
+            margin: 0 auto 20px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            margin-bottom: 200px;
+        }
+
+        #login-form input[type="text"],{
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            margin-left: 10px;
+        }
+
+        #login-form input[type="submit"] {
+            color: white;
+        }
+
+    </style>
+{% endblock %}
+
+{% load i18n static %}
+
+{% block content %}
+<div id="content-main">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if form.errors and not form.non_field_errors %}
+    <p class="errornote">
+        {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}
+            {% trans "Please correct the errors below." %}
+        {% endif %}
+    </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="errornote">
+                {{ error }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Add A Product</h2>
+    <hr>
+
+
+    <form action="{% url 'edit_product_request' product.id %}" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">
+        <fieldset>
+        {% csrf_token %}
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">Owner:</label>
+            <div class="col-sm-10"><input name="owner" class="form-control" type="text" value={{request.user}} disabled></div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">Name:</label>
+            <div class="col-sm-10"><input name="name" class="form-control" type="text" value="{{ product.name }}"></div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">Description: </label>
+            <div class="col-sm-10"><textarea name="description" class="form-control">{{ product.description }}</textarea></div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">Available quantity: </label>
+            <div class="col-sm-10"><input name="available_quantity" class="form-control" type="number" value="{{product.available_quantity}}"></div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">Price: </label>
+            <div class="col-sm-10"><input name="price" class="form-control" type="number" value="{{product.price}}"></div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">  Image:</label>
+            <div class="col-sm-3"><img src="{{ product.image }}" width=100%></div>
+          </div>
+          <br>
+          <div class="row" style="margin-left: 90px"><input name="image" type="file"></div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <label class="col-sm-2 control-label "> Category:</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="category_id">
+                  <option value="{{ product.category }}">{{ product.category }}</option>
+                  {% for category in categories %}
+                    <option value={{category}}>{{ category }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+          </div>
+
       </div>
-    </div>
 
-    <div class="form-group ">
-      <label class="col-sm-2 control-label ">
-        Description
-      </label>
-
-      <div class="col-sm-10">
-        <textarea name="description" class="form-control">{{ product.description }}</textarea>
+      <div class="form-actions" style="text-align: center">
+        <button class="btn btn-primary js-tooltip" title="" data-original-title="Make a POST request on the Product List resource">Save</button>
       </div>
-    </div>
+      </fieldset>
+      </form>
 
-    <div class="form-group ">
-      <label class="col-sm-2 control-label ">
-        Available quantity
-      </label>
+</div>
 
-      <div class="col-sm-10">
-        <input name="available_quantity" class="form-control" type="number" value="{{ product.available_quantity }}">
-      </div>
-    </div>
-
-    <div class="form-group ">
-      <label class="col-sm-2 control-label ">
-        Price
-      </label>
-
-      <div class="col-sm-10">
-        <input name="price" class="form-control" type="number" value="{{ product.price }}">
-      </div>
-    </div>
-
-    <div class="form-group ">
-      <label class="col-sm-2 control-label ">
-        Image
-      </label>
-
-      <div class="col-sm-10">
-        <input name="image" type="file" value="{{ product.image }}">
-
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-sm-2 control-label ">
-        Category id
-      </label>
-
-    <div class="col-sm-10">
-          <select class="form-control" name="category_id">
-            <option value="http://127.0.0.1:8000/api/Categories/1/">Computers &amp; Accessories</option>
-            <option value="http://127.0.0.1:8000/api/Categories/2/">Video Games</option>
-            <option value="http://127.0.0.1:8000/api/Categories/3/">Phones &amp; Accessories</option>
-          </select>
-    </div>
-  </div>
-
-  <div class="form-actions">
-    <button class="btn btn-primary js-tooltip" title="" data-original-title="Make a POST request on the Product List resource">POST</button>
-  </div>
-  </fieldset>
-  </form>
+{%  endblock %}

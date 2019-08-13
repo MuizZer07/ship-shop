@@ -1,0 +1,47 @@
+{% extends "base_web.html" %}
+
+{% block title %}
+    ShipShop | My Products
+{% endblock %}
+
+{% block customcss %}
+{% load staticfiles %}
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/custom/index.css' %}"> -->
+{% endblock %}
+
+
+{% block content %}
+    <section class="py-5">
+        <div class="container">
+
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+
+            <h2 class="font-weight-light">My Products</h2>
+            <div class="row">
+                {% for product in products %}
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ product.image }}" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Name: {{ product.name }} |
+                            <span class="badge badge-pill badge-success"> {{ product.price }} </span>
+                            <span class="badge badge-pill badge-success"> {{ product.available_quantity }} </span>
+                            <hr>
+                            <a href="{% url 'show_product' product.id %}" class="btn btn-primary">Details</a>
+                            <a href="{% url 'edit_product' product.id %}" class="btn btn-secondary">Edit</a>
+                            <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+             </div>
+            </div>
+    </section>
+{% endblock %}

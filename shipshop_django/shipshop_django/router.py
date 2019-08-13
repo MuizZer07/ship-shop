@@ -1,10 +1,9 @@
-from product.api.viewsets import ProductViewSet, CategoryViewSet
+from product.api.viewsets import ProductViewSet
 from rest_framework import routers
 from users.api.viewsets import UserListView
 
 router = routers.DefaultRouter()
 router.register('products', ProductViewSet, base_name='product')
-router.register('categories', CategoryViewSet)
 router.register('users', UserListView)
 
 # import requests

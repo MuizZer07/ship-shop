@@ -26,6 +26,30 @@
 
             <a href={% url 'add_product' %} type="button" class="btn btn-outline-default">Add New Product</a>
             <a href={% url 'show_list' %} type="button" class="btn btn-outline-default">My Products</a>
+            <br><br>
+            <h2> My Order History </h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#ID</th>
+                  <th scope="col">Order Key</th>
+                  <th scope="col">Placed Time</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in orders %}
+                <tr>
+                  <th scope="row">{{ order.id }}</th>
+                  <td>{{ order.order_key }}</td>
+                  <td>{{ order.order_date }}</td>
+                  <td>{{ order.status }}</td>
+                  <td>{{ order.total }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
             </div>
     </section>
 {% endblock %}

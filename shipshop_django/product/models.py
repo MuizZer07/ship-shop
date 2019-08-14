@@ -56,6 +56,7 @@ class Order(models.Model):
     complete_date = models.DateTimeField(blank=True, null=True)
     total = models.FloatField()
     products = models.ManyToManyField(Product)
+    quantity_list = models.CharField(max_length=80, null=True)
 
     STATUS = [
         ('Pending', 'Pending'),

@@ -6,18 +6,6 @@
     margin-top: 70px;
 }
 
-.new_footer{
-    background-color: #374f84;
-    color: white;
-    text-align: right;
-    padding: 10px;
-}
-
-.new_footer a{
-   color: rgb(185, 206, 255);
-   text-decoration: none;
-}
-
 .navbar{
     background-color: #374f84;
     color: white;

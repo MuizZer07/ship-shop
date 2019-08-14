@@ -26,3 +26,23 @@
 .navbar a{
     color: white;
 }
+
+html {
+  min-height: 100%;
+}
+body {
+  min-height: 100vh;
+}
+footer{
+  position: relative;
+  margin-top: 200px;
+  background-color: #374f84;
+  color: white;
+  text-align: right;
+  padding: 10px;
+}
+
+footer a{
+   color: rgb(185, 206, 255);
+   text-decoration: none;
+}

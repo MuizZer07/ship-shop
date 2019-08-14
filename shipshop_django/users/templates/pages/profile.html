@@ -1,7 +1,7 @@
 {% extends "base_web.html" %}
 
 {% block title %}
-    ShipShop | Registration
+    ShipShop | Profile
 {% endblock %}
 
 {% block customcss %}
@@ -12,7 +12,7 @@
         }
 
         #content-main {
-            max-width: 400px;
+            max-width: 800px;
             padding: 19px 29px 29px;
             margin: 0 auto 20px;
             background-color: #fff;
@@ -33,24 +33,6 @@
             margin-bottom: 15px;
             margin-left: 10px;
         }
-
-        #login-form input[type="confirm_password"] {
-            font-size: 16px;
-            height: auto;
-            margin-bottom: 15px;
-            margin-left: 450px;
-        }
-
-        #login-form input[type="email"] {
-            font-size: 16px;
-            height: auto;
-            margin-bottom: 15px;
-            margin-left: 45px;
-        }
-        #login-form input[type="submit"] {
-            color: white;
-        }
-
     </style>
 {% endblock %}
 
@@ -83,16 +65,20 @@
         {% endfor %}
     {% endif %}
 
-    <h2>Register</h2>
+    <h2>My Profile</h2>
+    Name: {{ user.first_name }} {{ user.last_name }} <br>
+    Username: {{ user.username }} <br>
+    Email: {{ user.email }} <br>
+    Phone Number: {{ user.phone_number }} <br>
+
+    Account Type:
+    {% if user.is_buyer %}
+      Buyer
+    {% elif user.is_seller %}
+      Seller
+    {% endif %} <br>
     <hr>
 
-    <form method="post" id="login-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-    <div class="submit-row" style="text-align: center">
-        <input class="btn btn-secondary"  type="submit" value="Register!">
-    </div>
-    </form>
 </div>
 
 {%  endblock %}

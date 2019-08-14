@@ -6,26 +6,23 @@
 
 {% block customcss %}
 {% load staticfiles %}
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/custom/index.css' %}"> -->
+
+<style media="screen">
+  .all-product{
+    text-align: center;
+    background-color: white;
+    margin-top: 10px;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+</style>
 {% endblock %}
 
-{% block header %}
-<header class="masthead">
-        <!-- <div class="container h-100">
-        <div class="row h-100 align-items-center">
-            <div class="col-12 text-center">
-                    <h1 class="font-weight-normal">Buy and sell online</h1>
-                    <p class="lead font-weight-normal">You are just one click away! </p>
-                 </div>
-            </div>
-        </div> -->
-</header>
-{% endblock %}
 
 {% block content %}
     <section class="py-5">
         <div class="container">
-
           {% if messages %}
               <ul class="messages">
                   {% for message in messages %}
@@ -34,17 +31,16 @@
               </ul>
           {% endif %}
 
-            <h2 class="font-weight-light">Recent Products</h2>
             <div class="row">
                 {% for product in products %}
-                <div class="col-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ product.image }}" alt="Product Image">
+                <div class="col-md-4 col-sm-6" style="margin-top: 10px">
+                    <div class="card">
+                        <img class="" style="max-width: 100%; height: 200px;""  src="{{ product.image }}" alt="Product Image">
                         <div class="card-body">
-                            <h5 class="card-title">Name: {{ product.name }} |
-                            <span class="badge badge-pill badge-success"> {{ product.price }} </span>
-                            <span class="badge badge-pill badge-success"> {{ product.available_quantity }} </span>
+                            <h5 class="card-title">{{ product.name }} </h5>
+                            <h6>Available: <span class="badge badge-success">{{ product.available_quantity }}</span></h6>
                             <hr>
+                            <h6>Price: {{ product.price }} BDT. </h6>
                             <a href="product/show/{{product.id}}" class="btn btn-primary">Details</a>
                             {% if product.id not in cart %}
                               <a href="{% url 'add_to_cart' product.id %}" class="btn btn-secondary">Add to Cart</a>
@@ -54,9 +50,15 @@
                         </div>
                     </div>
                 </div>
-
                 {% endfor %}
              </div>
-            </div>
+          </div>
+          <div class="all-product">
+            <a type="btn" href="#">See All Products</a>
+          </div>
     </section>
+
+    {% block customjs %}
+    {% endblock %}
+
 {% endblock %}

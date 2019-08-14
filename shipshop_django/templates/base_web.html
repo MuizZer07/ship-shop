@@ -22,62 +22,131 @@
     <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet">
 
+    <style media="screen">
+      html {
+        min-height: 100%;
+        }
+        body {
+          min-height: 100vh;
+        }
+        footer{
+          position: relative;
+          margin-top: 250px;
+          background-color: #374f84;
+          color: white;
+          text-align: right;
+          padding: 10px;
+        }
+
+        footer a{
+           color: rgb(185, 206, 255);
+           text-decoration: none;
+        }
+        .dropdown:hover>.dropdown-menu {
+            display: block;
+            background-color: #374f84;
+          }
+
+        .dropdown>.dropdown-toggle:active {
+            pointer-events: none;
+        }
+
+        #dropdownMenuButton{
+          color: white;
+        }
+
+    </style>
 
 </head>
 {% block header %}
 {% endblock %}
 <body class="body">
     <nav class="navbar navbar-expand-lg shadow fixed-top">
-            <div class="container">
-            <a class="navbar-brand" href="">ShipShop</a>
+        <div class="container">
+          <div class="row">
+              <a class="navbar-brand" href="{% url 'index' %}">
+                <img src={% static 'images/icons8-cargo-ship-64.png' %}>  ShipShop
+              </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <span class="navbar-toggler-icon"><i class="far fa-caret-square-down"></i></span>
+              </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
-                </li>
-                {% if request.user.is_authenticated %}
-                <li class="nav-item">
+                  <li class="nav-item">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          My Account
+                          All Categories
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a style="color:black" class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
-                          <!-- <a style="color:black" class="dropdown-item" href="#">Settings</a> -->
-                          <a style="color: black" class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                          <a class="dropdown-item" href="#">Clothings</a>
+                          <a class="dropdown-item" href="#">Computer & Accessories</a>
+                          <a class="dropdown-item" href="#">Electronics</a>
+                          <a class="dropdown-item" href="#">Entertainment</a>
+                          <a class="dropdown-item" href="#">Health & Beauty</a>
+                          <a class="dropdown-item" href="#">Home & Lifestyle</a>
+                          <a class="dropdown-item" href="#">Sport</a>
+                          <a class="dropdown-item" href="#">Men's Fashion</a>
+                          <a class="dropdown-item" href="#">Women's Fashion</a>
+                          <a class="dropdown-item" href="#">Others</a>
                         </div>
                       </div>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Sign In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
-                </li>
-                {% endif %}
+                  </li>
                 </ul>
             </div>
         </div>
+        <div class="row">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"><i class="far fa-caret-square-down"></i></span>
+            </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-house-damage"></i> Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'about' %}"><i class="fas fa-info"></i> About</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'contact' %}"><i class="fas fa-sign-in-alt"></i> Contact</a>
+              </li>
+              {% if request.user.is_authenticated %}
+              <li class="nav-item">
+
+                  <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="far fa-user-circle"></i>  My Account
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-columns"></i> Dashboard</a>
+                        <a class="dropdown-item" href="{% url 'profile' request.user.id %}"><i class="far fa-address-card"></i> Profile</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                      </div>
+                    </div>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Sign Up</a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'checkout' %}"><i class="fas fa-cart-plus"></i> Check Out</i></a>
+              </li>
+              </ul>
+          </div>
+      </div>
+      </div>
     </nav>
+
     <div class="wrapper">
-      <a style="float:right" href="{% url 'checkout' %}" class="btn btn-secondary">Check-out</a>
         {% block content %}
 
         {% endblock %}
     </div>
 
-    <br><br><br><br><br><br>
-    <div class="new_footer fixed-bottom">
+    <footer>
         <small>This Website is managed and developed by <a href="http://muizzer07.pythonanywhere.com" target=”_blank”>Muiz Ahmed Khan</a>. Source code is available on
             <a class="githublink" target=”_blank” href="https://github.com/MuizZer07/ship-shop"> GitHub.</a>
             Feel free to give any feedback via <a href="mailto:muizxzer07@gmail.com" target="_top">email</a> or contact on social media.</small>
@@ -91,7 +160,7 @@
         <a data-toggle="tooltip" title="instagram" target=”_blank” href="https://www.instagram.com/muizzer07/"><i class="fab fa-instagram"></i></a>
         <br>
         <small>Muiz Ahmed Khan &copy; {%now "Y"%}</small>
-    </div>
+    </footer>
 
     <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -100,5 +169,4 @@
     {% endblock %}
 
 </body>
-
 </html>

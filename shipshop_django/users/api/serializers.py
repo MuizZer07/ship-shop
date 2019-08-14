@@ -10,7 +10,7 @@ from django.db import IntegrityError
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'url', 'username', 'email', 'is_buyer', 'is_seller', 'phone_number', 'rating')
+        fields = ('id', 'url', 'first_name', 'last_name', 'username', 'email', 'is_buyer', 'is_seller', 'phone_number', 'rating')
 
 class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)

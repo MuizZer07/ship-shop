@@ -1,17 +1,85 @@
 {% extends "base_web.html" %}
 
 {% block title %}
-  ShipShop | Thanks for staying with us..
+    Ship Shop | Thanks for staying with us..
 {% endblock %}
 
 {% block customcss %}
 {% load staticfiles %}
+<style>
+        .body {
+        padding-top: 0px;
+        }
+
+        #content-main {
+            max-width: 100%;
+            padding: 19px 29px 29px;
+            margin: 0 auto 20px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            margin-bottom: 200px;
+        }
+    </style>
 
 {% endblock %}
 
 {% block content %}
-    <section class="py-5">
-        <div class="container">
-            Your order has been placed! Thanks!
-    </section>
+<div id="content-main"><br><br>
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+          Your order has been placed! Thanks!
+          <br><br>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#ID</th>
+                <th scope="col">Order Key</th>
+                <th scope="col">Placed Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Seller</th>
+                <th scope="col">Products</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <tr>
+                <th scope="row">{{ order.id }}</th>
+                <td>{{ order.order_key }}</td>
+                <td>{{ order.order_date }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.seller_name }}</td>
+                <td>
+                  <ul>
+                  {% for product in order.product_names %}
+                    <li>{{ product }}</li>
+                  {% endfor %}
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                  {% for product in order.quantity_list %}
+                    <li>{{ product }}</li>
+                  {% endfor %}
+                  </ul>
+                </td>
+                <td>{{ order.total }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+    </div>
 {% endblock %}

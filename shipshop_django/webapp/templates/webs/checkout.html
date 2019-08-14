@@ -1,46 +1,196 @@
 {% extends "base_web.html" %}
 
 {% block title %}
-    ShipShop | You are just one click away!..
+    ShipShop | Check-Out
 {% endblock %}
 
 {% block customcss %}
 {% load staticfiles %}
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/custom/index.css' %}"> -->
+<style>
+        .body {
+        padding-top: 0px;
+        }
+
+        #content-main {
+            max-width: 100%;
+            padding: 19px 29px 29px;
+            margin: 0 auto 20px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            margin-bottom: 200px;
+        }
+
+        #login-form input[type="text"],{
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            margin-left: 10px;
+        }
+
+        #login-form input[type="submit"] {
+            color: white;
+        }
+
+    </style>
 {% endblock %}
 
-{% block header %}
-<header class="masthead">
-        <!-- <div class="container h-100">
-        <div class="row h-100 align-items-center">
-            <div class="col-12 text-center">
-                    <h1 class="font-weight-normal">Buy and sell online</h1>
-                    <p class="lead font-weight-normal">You are just one click away! </p>
-                 </div>
-            </div>
-        </div> -->
-</header>
-{% endblock %}
+{% load i18n static %}
 
 {% block content %}
-    <section class="py-5">
-        <div class="container">
+<div id="content-main">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-          {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
+    {% if form.errors and not form.non_field_errors %}
+    <p class="errornote">
+        {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}
+            {% trans "Please correct the errors below." %}
+        {% endif %}
+    </p>
+    {% endif %}
 
-            <h2 class="font-weight-light">Check Out</h2>
-            <div class="row">
-                {% for product in products %}
-                  {{ product.name }} <br>
-                  {{ product.price }}
-                {% endfor %}
-             </div>
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="errornote">
+                {{ error }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Check-Out</h2>
+    <hr>
+
+
+    <form action="{% url 'checkout_request' %}" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">
+        <fieldset>
+        {% csrf_token %}
+        <div class="form-group ">
+          <div class="row">
+            <label class="col-sm-2 control-label ">Buyer:</label>
+            <div class="col-sm-10"><input name="buyer" class="form-control" type="text" value={{request.user}} disabled></div>
           </div>
-    </section>
+        </div>
+        <table id="checkout-table" class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Product ID</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Available</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Sub Total</th>
+              <th scope="col">Remove from cart</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <th scope="row">
+                <div class="form-group">
+                  <input readonly type="number" name="product_ids" class="form-control" value="{{ product.id }}">
+               </div>
+              </th>
+              <td>
+                <div class="form-group">
+                  <input readonly type="text" name="product_names" class="form-control" value="{{ product.name }}">
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input readonly type="text" name="owner_name" class="form-control" value="{{ product.owner_name }}">
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input readonly type="text" name="available_quantity" class="form-control" value="{{product.available_quantity}}">
+                </div>
+              </td>
+              <td>
+                  <div class="form-group ">
+                  <div class="row">
+                    <div class="col-sm-12"><input id="quantity-{{ forloop.counter }}" type="number" min="1" max="{{product.available_quantity}}" name="quantity" class="form-control" value="1" oninput="calculate();"></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                  <div class="form-group ">
+                  <div class="row">
+                    <div class="col-sm-12"><input readonly id="price-{{ forloop.counter }}" name="price" class="form-control"  value="{{product.price}}" ></div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="form-group ">
+                  <div class="row">
+                    <div class="col-sm-12"><input readonly  id="subtotal-{{ forloop.counter }}" type="number" name="subtotal" class="form-control" type="text" value="{{product.price}}" ></div>
+                  </div>
+                </div>
+              </td>
+              <td><a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger">Remove from Cart</a></td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td scope="row" colspan="6" style="text-align: right">Total:</td>
+              <td>
+                <div class="form-group ">
+                <div class="row">
+                  <div class="col-sm-12"><input id="total" name="total" class="form-control" type="text" value="0" readonly></div>
+                </div>
+              </div>
+            </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+
+      <div class="form-actions" style="text-align: center">
+        <button class="btn btn-primary js-tooltip" title="" data-original-title="Make a POST request on the Product List resource">Place Order</button>
+      </div>
+      </fieldset>
+      </form>
+
+</div>
+
+{% block customjs %}
+
+<script>
+function calculate() {
+    var x = document.getElementById("checkout-table").rows.length;
+    var i;
+    var total = 0;
+
+    for (i = 1; i < x; i++) {
+      var myBox1 = document.getElementById('quantity-'+i).value;
+      var myBox2 = document.getElementById('price-'+i).value;
+
+      if(myBox1>0){
+        var myResult = myBox1 * myBox2;
+        document.getElementById('subtotal-'+i).value = myResult;
+      }else{
+        document.getElementById('subtotal-'+i).value = myBox2;
+      }
+
+      var myBox3 = document.getElementById('subtotal-'+i).value;
+      total += Number(myBox3)
+
+      document.getElementById('total').value = total;
+    }
+}
+</script>
+
 {% endblock %}
+
+{%  endblock %}

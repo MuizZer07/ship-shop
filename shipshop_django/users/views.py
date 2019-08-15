@@ -9,13 +9,26 @@ from django.contrib.auth.decorators import login_required
 import requests
 from shipshop_django.settings import API_ENDPOINT
 
+'''
+    view classes for some user pages
+'''
+
 @login_required
 def profile(request, user_id):
+    '''
+        public profile page with some information
+    '''
+
     user = requests.get(API_ENDPOINT + '/users/' + str(user_id)).json()
     return render(request, 'pages/profile.html', {'user': user})
 
 @login_required
 def dashboard(request):
+    '''
+        dashboard for users
+        shows their activity
+    '''
+
     if request.user.is_buyer:
         return buyer_dashboard(request)
     if request.user.is_seller:
@@ -23,6 +36,12 @@ def dashboard(request):
 
 @buyers_only
 def buyer_dashboard(request):
+    '''
+        buyer dashboard
+        shows their order history
+        change password option
+    '''
+
     orders = requests.get(API_ENDPOINT + '/orders/').json()
 
     my_orders = []
@@ -35,6 +54,15 @@ def buyer_dashboard(request):
 
 @sellers_only
 def seller_dashboard(request):
+    '''
+        seller dashboard
+        shows their orders & order history
+        change password option
+        add new product option
+        show list of their product
+        edit and delete products
+    '''
+
     orders = requests.get(API_ENDPOINT + '/orders/').json()
 
     my_orders = []

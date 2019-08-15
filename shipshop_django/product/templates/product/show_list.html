@@ -25,21 +25,21 @@
             <h2 class="font-weight-light">My Products</h2>
             <div class="row">
                 {% for product in products %}
-                <div class="col-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ product.image }}" alt="Product Image">
+                <div class="col-md-4 col-sm-6" style="margin-top: 10px">
+                    <div class="card">
+                        <img class="" style="max-width: 100%; height: 200px;""  src="{{ product.image }}" alt="Product Image">
                         <div class="card-body">
-                            <h5 class="card-title">Name: {{ product.name }} |
-                            <span class="badge badge-pill badge-success"> {{ product.price }} </span>
-                            <span class="badge badge-pill badge-success"> {{ product.available_quantity }} </span>
+                          <h5 class="card-title">{{ product.name }} </h5> <br>
+                            Price: {{ product.price }}<br>
+                            Available: {{ product.available_quantity }}<br>
+                            Description: {{ product.description }}<br>
+                            Category: {{ product.category }} <br>
                             <hr>
-                            <a href="{% url 'show_product' product.id %}" class="btn btn-primary">Details</a>
-                            <a href="{% url 'edit_product' product.id %}" class="btn btn-secondary">Edit</a>
-                            <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
+                            <a href="{% url 'edit_product' product.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                            <a href="{% url 'delete_product' product.id %}" class="btn btn-danger btn-sm">Delete</a>
                         </div>
                     </div>
                 </div>
-
                 {% endfor %}
              </div>
             </div>

@@ -139,7 +139,7 @@
                   </div>
                 </div>
               </td>
-              <td><a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger">Remove from Cart</a></td>
+              <td><a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
             {% endfor %}
             <tr>
@@ -147,7 +147,7 @@
               <td>
                 <div class="form-group ">
                 <div class="row">
-                  <div class="col-sm-12"><input id="total" name="total" class="form-control" type="text" value="0" readonly></div>
+                  <div class="col-sm-12"><input id="total" name="total" class="form-control" type="text" value="{{ total }}" readonly></div>
                 </div>
               </div>
             </td>
@@ -191,6 +191,8 @@ function calculate() {
     }
 }
 </script>
+
+
 
 {% endblock %}
 

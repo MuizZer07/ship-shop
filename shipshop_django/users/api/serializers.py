@@ -7,12 +7,26 @@ from allauth.account.utils import setup_user_email
 from django.utils.translation import gettext as _
 from django.db import IntegrityError
 
+'''
+    serializers for User model
+    registraion serializer
+'''
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    '''
+        User serializer for API endpoint
+    '''
+
     class Meta:
         model = User
         fields = ('id', 'url', 'first_name', 'last_name', 'username', 'email', 'is_buyer', 'is_seller', 'phone_number', 'rating')
 
 class RegisterSerializer(serializers.Serializer):
+    '''
+        custom registraion serializer
+        including custom parameters and validations
+    '''
+
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
     username = serializers.CharField(required=True, write_only=True)
     first_name = serializers.CharField(required=True, write_only=True)

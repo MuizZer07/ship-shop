@@ -54,7 +54,12 @@
         #dropdownMenuButton{
           color: white;
         }
-
+        .checkout-btn{
+          background-color: yellow;
+        }
+        .checkout-btn a{
+          color: black;
+        }
     </style>
 
 </head>
@@ -78,16 +83,17 @@
                           All Categories
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#">Clothings</a>
-                          <a class="dropdown-item" href="#">Computer & Accessories</a>
-                          <a class="dropdown-item" href="#">Electronics</a>
-                          <a class="dropdown-item" href="#">Entertainment</a>
-                          <a class="dropdown-item" href="#">Health & Beauty</a>
-                          <a class="dropdown-item" href="#">Home & Lifestyle</a>
-                          <a class="dropdown-item" href="#">Sport</a>
-                          <a class="dropdown-item" href="#">Men's Fashion</a>
-                          <a class="dropdown-item" href="#">Women's Fashion</a>
-                          <a class="dropdown-item" href="#">Others</a>
+                          <a class="dropdown-item" href="/product/show_by_category/Clothings">Clothings</a>
+                          <a class="dropdown-item" href="/product/show_by_category/ComputerAccessories">Computer & Accessories</a>
+                          <a class="dropdown-item" href="/product/show_by_category/MobileAccessories">Mobile & Accessories</a>
+                          <a class="dropdown-item" href="/product/show_by_category/Electronics">Electronics</a>
+                          <a class="dropdown-item" href="/product/show_by_category/Entertainment">Entertainment</a>
+                          <a class="dropdown-item" href="/product/show_by_category/HealthBeauty">Health & Beauty</a>
+                          <a class="dropdown-item" href="/product/show_by_category/HomeLifestyle">Home & Lifestyle</a>
+                          <a class="dropdown-item" href="/product/show_by_category/Sport">Sport</a>
+                          <a class="dropdown-item" href="/product/show_by_category/MensFashion">Men's Fashion</a>
+                          <a class="dropdown-item" href="/product/show_by_category/WomensFashion">Women's Fashion</a>
+                          <a class="dropdown-item" href="/product/show_by_category/Others">Others</a>
                         </div>
                       </div>
                   </li>
@@ -131,7 +137,7 @@
                   <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Sign Up</a>
               </li>
               {% endif %}
-              <li class="nav-item">
+              <li class="nav-item checkout-btn shadow rounded">
                   <a class="nav-link" href="{% url 'checkout' %}"><i class="fas fa-cart-plus"></i> Check Out</i></a>
               </li>
               </ul>

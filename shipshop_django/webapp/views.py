@@ -6,6 +6,7 @@ from users.decorators import buyers_only
 import random
 import string
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 '''
     Frontend,
@@ -15,6 +16,11 @@ from django.contrib import messages
 '''
 
 def index(request):
+    '''
+        index page/home page
+        shows recent available products
+    '''
+
     global cart
     products = requests.get(API_ENDPOINT + '/products')
     products = products.json()
@@ -29,49 +35,86 @@ def index(request):
     return render(request, 'webs/index.html', {'products': available_products, 'cart': cart})
 
 def about(request):
+    '''
+        about page for the website
+    '''
+
     return render(request, 'webs/about.html')
 
 def contact(request):
+    '''
+        contact page for the website
+    '''
+
     return render(request, 'webs/contact.html')
 
 def add_to_cart(request, product_id):
+    '''
+        adds product to cart
+    '''
+
     global cart
     if product_id not in cart:
         cart.append(int(product_id))
 
-    return redirect('/')
+    messages.add_message(request, messages.INFO, 'One Product is added to the cart!')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def remove_from_cart(request, product_id):
+    '''
+        remove product from cart
+    '''
+
     global cart
     if int(product_id) in cart:
         cart.remove(int(product_id))
 
-    return redirect('/')
+    messages.add_message(request, messages.INFO, 'One Product is removed from the cart!')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def clear_cart(request):
+    '''
+        clear all products from cart
+    '''
+
     global cart
     cart = []
 
-    return redirect('/')
+    messages.add_message(request, messages.INFO, 'Cart Cleared!')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @buyers_only
 def checkout(request):
+    '''
+        checkout page
+        shows cart with product details
+        summary of all purchase
+        remove from cart option
+        prepare for placing order by calulating price
+    '''
+
     global cart
     buyer = request.user.id
     products = []
+    total = 0
 
     for product_id in cart:
         product =  requests.get(API_ENDPOINT + '/products/' + str(product_id))
         product = product.json()
         owner = requests.get(product["owner"])
         owner = owner.json()
+        total += product["price"]
 
         product["owner_name"] = owner["username"]
         products.append(product)
 
-    return render(request, 'webs/checkout.html', {'products': products, 'buyer': buyer})
+    return render(request, 'webs/checkout.html', {'products': products, 'buyer': buyer, 'total': total})
 
 def place_order(request, key, total, buyer, seller, products, quantities):
+    '''
+        place order action request to the REST API
+    '''
+
     payload = {
         'order_key': key,
         'total': total,
@@ -93,6 +136,10 @@ def place_order(request, key, total, buyer, seller, products, quantities):
     return response
 
 def update_product(request, product_id, new_available_quantity):
+    '''
+        update product with new available quantity after selling certain quantity
+    '''
+
     if new_available_quantity < 0:
         new_available_quantity = 0
 
@@ -108,6 +155,15 @@ def update_product(request, product_id, new_available_quantity):
 
 @buyers_only
 def checkout_request(request):
+    '''
+        hadles checkout request
+        create new orders according to the sellers
+        each seller has new orders
+        updates product info checkout complete
+        clear cart after checkout complete
+        shows summary 
+    '''
+
     global cart
     product_ids = request.POST.getlist("product_ids")
     product_names = request.POST.getlist("product_names")

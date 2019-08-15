@@ -87,10 +87,11 @@
         <div class="submit-row" style="text-align: center">
             <input class="btn btn-secondary" type="submit" value="{% trans 'Log in' %}">
             <br>
-            <!-- <a href="#">Forgotten Password?</a> <hr> -->
         </div>
+        <hr>
         <div class="signup-row text-center">
-            Not registered? || <a href="{% url 'register' %}">Create Account!</a>
+          <a href="{% url 'forgot_password_page' %}">Forgotten Password?</a> <br>
+          Not registered? || <a href="{% url 'register' %}">Create Account!</a>
         </div>
         </form>
     </div>

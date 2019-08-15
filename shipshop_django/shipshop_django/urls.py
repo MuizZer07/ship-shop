@@ -21,6 +21,10 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import auth
 
+'''
+    urls for all pages and apps + static and media files
+'''
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('webapp.urls')),

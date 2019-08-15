@@ -1,5 +1,5 @@
 '''
-    this file contains global variables
+    this file contains global variables and constants to use
 '''
 
 cart = []

@@ -1,7 +1,7 @@
 {% extends "base_web.html" %}
 
 {% block title %}
-    ShipShop | You are just one click away!..
+    ShipShop | All Products
 {% endblock %}
 
 {% block customcss %}
@@ -32,6 +32,9 @@
           {% endif %}
 
             <div class="row">
+              {% if count <= 0 %}
+                There is no products
+              {% else %}
                 {% for product in products %}
                 <div class="col-md-4 col-sm-6" style="margin-top: 10px">
                     <div class="card">
@@ -52,10 +55,8 @@
                     </div>
                 </div>
                 {% endfor %}
+              {% endif %}
              </div>
-          </div>
-          <div class="all-product">
-            <a type="btn" href="{% url 'show_all' %}">See All Products</a>
           </div>
     </section>
 

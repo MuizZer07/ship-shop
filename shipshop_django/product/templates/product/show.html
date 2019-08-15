@@ -36,9 +36,9 @@
                           Category: {{ product.category }} <br>
                           <hr>
                           {% if product.id not in cart %}
-                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-secondary">Add to Cart</a>
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-info btn-sm"> <i class="far fa-plus-square"></i> Add to Cart</a>
                           {% else %}
-                            <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger">Remove from Cart</a>
+                            <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Remove from Cart</a>
                           {% endif %}
                       </div>
                     </div>

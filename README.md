@@ -9,10 +9,13 @@ A simple e-Commerce website where sellers can post ads of their products and buy
 ### Project Planning and Design (initially planned)
 #### Simple Class Diagram
 
-![Class Diagram](https://github.com/MuizZer07/ship-shop/blob/master/ShipShopDiagram.png "Class Diagram")
+![Class Diagram](https://github.com/MuizZer07/ship-shop/blob/master/pics/ShipShopDiagram.png "Class Diagram")
 
 #### Website Map
-![Website Map](https://github.com/MuizZer07/ship-shop/blob/master/WebsiteMap.png "Website Map")
+![Website Map](https://github.com/MuizZer07/ship-shop/blob/master/pics/WebsiteMap.png "Website Map")
+
+### Screenshot
+![Index Page](https://github.com/MuizZer07/ship-shop/blob/master/pics/shipshop.png "Index Page")
 
 ### Install & Run Project
 #### install modules

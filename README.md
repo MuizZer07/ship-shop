@@ -15,7 +15,7 @@ A simple e-Commerce website where sellers can post ads of their products and buy
 ![Website Map](https://github.com/MuizZer07/ship-shop/blob/master/pics/WebsiteMap.png "Website Map")
 
 ### Screenshot
-![Index Page](https://github.com/MuizZer07/ship-shop/blob/master/pics/shipshop.png "Index Page")
+![Index Page](https://github.com/MuizZer07/ship-shop/blob/master/pics/shipshop.PNG "Index Page")
 
 ### Install & Run Project
 #### install modules
